@@ -1,7 +1,7 @@
 /// <reference path='../typings/es6-promise/es6-promise.d.ts' />
 /// <reference path='../typings/whatwg-fetch/whatwg-fetch.d.ts' />
 /// <reference path='../typings/lodash/lodash.d.ts' />
-/// <reference path='../fuse/fuse.d.ts' />
+/// <reference path='../typings/fuse/fuse.d.ts' />
 
 export module fuseResources {
 
