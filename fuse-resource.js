@@ -1,6 +1,6 @@
-/// <reference path='../../../typings/es6-promise/es6-promise.d.ts' />
-/// <reference path='../../../typings/whatwg-fetch/whatwg-fetch.d.ts' />
-/// <reference path='../../../typings/lodash/lodash.d.ts' />
+/// <reference path='../typings/es6-promise/es6-promise.d.ts' />
+/// <reference path='../typings/whatwg-fetch/whatwg-fetch.d.ts' />
+/// <reference path='../typings/lodash/lodash.d.ts' />
 /// <reference path='../fuse/fuse.d.ts' />
 var fuseResources;
 (function (fuseResources) {
@@ -33,6 +33,22 @@ var fuseResources;
             });
             return result;
         };
+        ResourceClass.prototype.query = function (params, data, success, error) {
+            var request = this.makeRequest(params, data);
+            var result = new Resource(request, false);
+            request.then(function (response) {
+                this.resolveResult(result, response);
+            }).then(function (result) {
+                if (success) {
+                    success(result);
+                }
+            }).catch(function (err) {
+                if (error) {
+                    error(err);
+                }
+            });
+            return result;
+        };
         ResourceClass.prototype.makeRequest = function (params, data) {
             var url = this.url;
             var options = {
@@ -49,3 +65,4 @@ var fuseResources;
     })();
     fuseResources.ResourceClass = ResourceClass;
 })(fuseResources = exports.fuseResources || (exports.fuseResources = {}));
+//# sourceMappingURL=fuse-resource.js.map

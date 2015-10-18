@@ -1,6 +1,6 @@
-/// <reference path='../../../typings/es6-promise/es6-promise.d.ts' />
-/// <reference path='../../../typings/whatwg-fetch/whatwg-fetch.d.ts' />
-/// <reference path='../../../typings/lodash/lodash.d.ts' />
+/// <reference path='../typings/es6-promise/es6-promise.d.ts' />
+/// <reference path='../typings/whatwg-fetch/whatwg-fetch.d.ts' />
+/// <reference path='../typings/lodash/lodash.d.ts' />
 /// <reference path='../fuse/fuse.d.ts' />
 
 export module fuseResources {
@@ -19,6 +19,30 @@ export module fuseResources {
         }
 
         get(params?:any, data?:Object, success?:Function, error?:Function):Resource<T> {
+
+            var request:Promise<Response> = this.makeRequest(params, data);
+
+            var result:Resource<T> = new Resource(request, false);
+
+            request
+                .then(function (response:Response):void {
+                    this.resolveResult(result, response);
+                })
+                .then(function (result:any) {
+                    if (success) {
+                        success(result);
+                    }
+                })
+                .catch(function (err:Error) {
+                    if (error) {
+                        error(err);
+                    }
+                })
+
+            return result;
+        }
+
+        query(params?:any, data?:Object, success?:Function, error?:Function):Resource<T> {
 
             var request:Promise<Response> = this.makeRequest(params, data);
 
